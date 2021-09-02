@@ -16,7 +16,7 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
-WAVE_OUTPUT_FILENAME = "client_temp.wav"
+# WAVE_OUTPUT_FILENAME = "client_temp.wav"
 
 
 

@@ -1,2 +1,7 @@
-# audio-stream
-This python app is developed with python 
+# audio-stream installation
+
+---
+
+### Step 1
+
+- clone this repository 
