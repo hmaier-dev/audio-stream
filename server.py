@@ -58,7 +58,7 @@ def send_audio():
             x = pickle.dumps(data) # converting into byte stream
             message = struct.pack("Q",len(x))+x #create packet, the "+x" contains the audio
             conn.sendall(message) #send the packet
-            frames.append(data)
+            # frames.append(data)
         except KeyboardInterrupt:
             stream.stop_stream()
             stream.close()
@@ -67,13 +67,13 @@ def send_audio():
             break
 
 
-    wf = wave.open(file_name, 'wb')
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    wf.setframerate(RATE)
-    wf.writeframes(b''.join(frames))
-    wf.close()
-    print("Audio has been saved as: {}".format(file_name))
+    # wf = wave.open(file_name, 'wb')
+    # wf.setnchannels(CHANNELS)
+    # wf.setsampwidth(p.get_sample_size(FORMAT))
+    # wf.setframerate(RATE)
+    # wf.writeframes(b''.join(frames))
+    # wf.close()
+    # print("Audio has been saved as: {}".format(file_name))
 
 
 if __name__ == "__main__":
