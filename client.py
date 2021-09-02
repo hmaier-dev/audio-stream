@@ -6,6 +6,8 @@ import socket
 import struct
 import pickle
 
+import threading
+
 import wave
 import pyaudio
 
@@ -20,15 +22,16 @@ WAVE_OUTPUT_FILENAME = "client_temp.wav"
 
 def receive_audio():
     # server_name = socket.gethostname()
-    server_name = "hmaier-debian"
-    port = 5656  # port of the server
+
+    server_name = "192.168.0.224"
+    port = 61234  # port of the server
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # ipv4 and TCP
     print("Trying to connect to {}:{}".format(server_name, port))
     client_socket.connect((server_name, port))
     print("Success!")
-    print("Starting PyAudio...")
     p = pyaudio.PyAudio()
+    print("Receiving Audio...")
 
     stream = p.open(
         format=FORMAT,
@@ -76,5 +79,8 @@ def receive_audio():
     wf.writeframes(b''.join(frames))
     wf.close()
 
+
 if __name__ == "__main__":
+    t1 = threading.Thread(target=receive_audio, args=())
+    t1.start()
     receive_audio()

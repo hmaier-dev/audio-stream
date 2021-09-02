@@ -14,7 +14,6 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
-WAVE_OUTPUT_FILENAME = "server_temp.wav"
 
 
 # if pyaudio does not find an interface, please load the loopback-interface
@@ -22,7 +21,7 @@ WAVE_OUTPUT_FILENAME = "server_temp.wav"
 
 
 def send_audio():
-    #wf = wave.open("server_temp.wav", 'wb') # creating a temporary .wav file
+    print("Starting PyAudio")
     p = pyaudio.PyAudio()  # starting pyaudio
     print("You can ignore the previous error messages")
     stream = p.open(
@@ -33,8 +32,11 @@ def send_audio():
         frames_per_buffer=CHUNK
     )
 
-    host = socket.gethostname()  # get own hostname
-    ip_address = socket.gethostbyname(host)
+    # get your ip address in the local network
+    # LINUX: ip addr
+    # WINDOWS: ipconfig
+
+    host = "192.168.0.79" #change this to your ip address
     port = 61234
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # ipv4 and TCP
@@ -65,12 +67,13 @@ def send_audio():
             break
 
 
-    wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+    wf = wave.open(file_name, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
+    print("Audio has been saved as: {}".format(file_name))
 
 
 if __name__ == "__main__":
