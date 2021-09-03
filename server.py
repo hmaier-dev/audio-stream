@@ -58,7 +58,6 @@ def send_audio():
         try:
 
             data = stream.read(CHUNK)  # read audio data
-            print(data)
             x = pickle.dumps(data) # converting into byte stream
             message = struct.pack("Q",len(x))+x # create packet, the "+x" contains the audio
                                                 # add a buffer
