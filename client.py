@@ -31,7 +31,6 @@ def receive_audio():
     client_socket.connect((server_name, port))
     print("Success!")
     p = pyaudio.PyAudio()
-    print("Receiving Audio...")
 
     stream = p.open(
         format=FORMAT,
@@ -68,8 +67,11 @@ def receive_audio():
             frame = pickle.loads(frame_data) # convert byte stream into audio
             frames.append(frame) # write the audio to a array which will create the client_temp.wav
             stream.write(frame) #output the audio to the pc
+            print(stream.get_input_latency())
         except KeyboardInterrupt:
             client_socket.close()
+            stream.stop_stream()
+            stream.close()
             break
 
     wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
