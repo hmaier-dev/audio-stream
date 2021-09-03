@@ -4,12 +4,14 @@
 import sys
 import getopt
 import socket
-import struct
 import time
 
 import pyaudio
 import wave
 import pickle
+import struct
+
+import platform
 
 
 CHUNK = 1024*64
@@ -20,6 +22,13 @@ RATE = 44100
 
 # if pyaudio does not find an interface, please load the loopback-interface
 # $ pactl load-module module-loopback
+
+def get_host_ip():
+    sys = platform.system()
+    if "Linux" in sys:
+        return
+    elif "Windows" in sys:
+        return
 
 
 def send_audio():
@@ -38,10 +47,14 @@ def send_audio():
     # LINUX: ip addr
     # WINDOWS: ipconfig
 
+
+
     host = "192.168.0.79" #change this to your ip address
+
     port = 61234
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # ipv4 and UDP
+
     socket_address = (host, port)
     server_socket.bind(socket_address)
     server_socket.listen(2)
