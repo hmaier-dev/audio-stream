@@ -12,7 +12,7 @@ import wave
 import pickle
 
 
-CHUNK = 1024*2
+CHUNK = 1024*64
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
@@ -56,23 +56,21 @@ def send_audio():
     print("Close connection with CTRL+C")
     while True: # client is connected, start sending audio
         try:
+
             data = stream.read(CHUNK)  # read audio data
+            print(data)
             x = pickle.dumps(data) # converting into byte stream
-            message = struct.pack("Q",len(x))+x #create packet, the "+x" contains the audio
+            message = struct.pack("Q",len(x))+x # create packet, the "+x" contains the audio
+                                                # add a buffer
             conn.sendall(message) #send the packet
             # frames.append(data)
         except KeyboardInterrupt:
-            #reading the last chunk
-            data = stream.read(CHUNK)
-            x = pickle.dumps(data)
-            message = struct.pack("Q", len(x)) + x
-            conn.sendall(message)
             stream.stop_stream()
             stream.close()
             p.terminate()
+            server_socket.detach()
             conn.close()
             break
-
 
     # wf = wave.open(file_name, 'wb')
     # wf.setnchannels(CHANNELS)

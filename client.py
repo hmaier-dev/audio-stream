@@ -12,7 +12,7 @@ import wave
 import pyaudio
 
 
-CHUNK = 1024*8
+CHUNK = 1024*64
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
@@ -67,19 +67,19 @@ def receive_audio():
             frame = pickle.loads(frame_data) # convert byte stream into audio
             frames.append(frame) # write the audio to a array which will create the client_temp.wav
             stream.write(frame) #output the audio to the pc
-            print(stream.get_input_latency())
+            stream.get_write_available()
         except KeyboardInterrupt:
             client_socket.close()
             stream.stop_stream()
             stream.close()
             break
 
-    wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    wf.setframerate(RATE)
-    wf.writeframes(b''.join(frames))
-    wf.close()
+    # wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+    # wf.setnchannels(CHANNELS)
+    # wf.setsampwidth(p.get_sample_size(FORMAT))
+    # wf.setframerate(RATE)
+    # wf.writeframes(b''.join(frames))
+    # wf.close()
 
 
 if __name__ == "__main__":
