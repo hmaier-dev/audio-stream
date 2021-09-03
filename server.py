@@ -12,7 +12,7 @@ import wave
 import pickle
 
 
-CHUNK = 1024
+CHUNK = 1024*2
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
@@ -62,6 +62,11 @@ def send_audio():
             conn.sendall(message) #send the packet
             # frames.append(data)
         except KeyboardInterrupt:
+            #reading the last chunk
+            data = stream.read(CHUNK)
+            x = pickle.dumps(data)
+            message = struct.pack("Q", len(x)) + x
+            conn.sendall(message)
             stream.stop_stream()
             stream.close()
             p.terminate()
