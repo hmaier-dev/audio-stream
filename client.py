@@ -12,7 +12,7 @@ import wave
 import pyaudio
 
 
-CHUNK = 1024
+CHUNK = 1024*8
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
@@ -52,7 +52,7 @@ def receive_audio():
             while len(data) < payload_size: #receiving 1016 bytes
                 # this while loop could be missed (because it iterates jsut once),
                 # but for checking if theres a packet, I leave it there
-                packet = client_socket.recv(1024) #receive the first part of the data to unpack the data
+                packet = client_socket.recv(CHUNK) #receive the first part of the data to unpack the data
                 if not packet: break
                 data+=packet
 
@@ -61,7 +61,7 @@ def receive_audio():
             msg_size = struct.unpack("Q", packed_msg_size)[0] # calc how big the message will be
             #msg_size = 4106
             while len(data) < msg_size: #receive 3090 bytes
-                data += client_socket.recv(1024)
+                data += client_socket.recv(CHUNK)
 
             frame_data = data[:msg_size] # deconstructing the packet, to get the actual audio data
             data = data[msg_size:] # deconstructing the packet (maybe I don't need this?!)

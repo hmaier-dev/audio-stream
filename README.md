@@ -11,16 +11,15 @@
 ### Step 2
 
 - Get the PyAudio-module installed
+- you need `pipwin` or the `python-pyaudio`- package, because these contain `portaudio` which is an C-Library that PyAudio uses to record/play audio. 
 
 ##### Windows
 `pip install pipwin`
 
 `pipwin install pyaudio`
 
-You need `pipwin` to automatically install `portaudio` which is an C-Library that PyAudio uses to record/play audio. 
-
 ##### Linux
-
+`sudo apt install python-pyaudio`
 
 ### Step 3
 
@@ -38,3 +37,7 @@ You need `pipwin` to automatically install `portaudio` which is an C-Library tha
 
 - activate your soundcard as default audio-input devices
 - here is a good article on how to do it [How to Record the Sound Coming From Your PC](https://www.howtogeek.com/217348/how-to-record-the-sound-coming-from-your-pc-even-without-stereo-mix/)
+
+### Step 4
+
+- 

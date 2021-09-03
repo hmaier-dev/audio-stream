@@ -1,9 +1,11 @@
 #!/bin/python3
 
 # Server transmitting audio
-
+import sys
+import getopt
 import socket
 import struct
+import time
 
 import pyaudio
 import wave
@@ -20,7 +22,7 @@ RATE = 44100
 # $ pactl load-module module-loopback
 
 
-def send_audio():
+def send_audio(host, port):
     print("Starting PyAudio")
     p = pyaudio.PyAudio()  # starting pyaudio
     print("You can ignore the previous error messages")
@@ -39,7 +41,7 @@ def send_audio():
     host = "192.168.0.79" #change this to your ip address
     port = 61234
 
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # ipv4 and TCP
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # ipv4 and UDP
     socket_address = (host, port)
     server_socket.bind(socket_address)
     server_socket.listen(2)
@@ -77,4 +79,5 @@ def send_audio():
 
 
 if __name__ == "__main__":
-    send_audio()
+
+    send_audio(host,port)
