@@ -40,4 +40,10 @@
 
 ### Step 4
 
-- 
+- work in progress
+
+### Appendix
+
+- by now the latency of this is way to high (5 seconds)
+- you have to manually change the IP adresses in the script 
+
