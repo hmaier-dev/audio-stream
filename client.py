@@ -5,12 +5,10 @@
 import socket
 import struct
 import pickle
-
 import threading
-
-import wave
 import pyaudio
-
+import sys
+# import wave
 
 CHUNK = 1024*64
 FORMAT = pyaudio.paInt16
@@ -21,7 +19,6 @@ RATE = 44100
 
 def receive_audio():
     # server_name = socket.gethostname()
-
     server_name = "192.168.0.224"
     port = 61234  # port of the server
 

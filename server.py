@@ -1,16 +1,10 @@
 #!/bin/python3
 
 # Server transmitting audio
-import sys
-import getopt
 import socket
-import time
-
 import pyaudio
-import wave
 import pickle
 import struct
-
 import platform
 
 
@@ -19,16 +13,15 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 
-
 # if pyaudio does not find an interface, please load the loopback-interface
 # $ pactl load-module module-loopback
 
+
 def get_host_ip():
-    sys = platform.system()
-    if "Linux" in sys:
-        return
-    elif "Windows" in sys:
-        return
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    print(s.getsockname()[0])
+    s.close()
 
 
 def send_audio():
@@ -47,13 +40,13 @@ def send_audio():
     # LINUX: ip addr
     # WINDOWS: ipconfig
 
-
-
-    host = "192.168.0.79" #change this to your ip address
+    # host = "192.168.0.79"  # change this to your ip addres
+    host = get_host_ip()
 
     port = 61234
 
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # ipv4 and UDP
+    server_socket = socket.socket(
+        socket.AF_INET, socket.SOCK_DGRAM)  # ipv4 and UDP
 
     socket_address = (host, port)
     server_socket.bind(socket_address)
@@ -64,17 +57,16 @@ def send_audio():
     conn, address = server_socket.accept()
     print("Connection from {}".format(address))
 
-    frames = []
-
     print("Close connection with CTRL+C")
-    while True: # client is connected, start sending audio
+    while True:  # client is connected, start sending audio
         try:
 
             data = stream.read(CHUNK)  # read audio data
-            x = pickle.dumps(data) # converting into byte stream
-            message = struct.pack("Q",len(x))+x # create packet, the "+x" contains the audio
-                                                # add a buffer
-            conn.sendall(message) #send the packet
+            x = pickle.dumps(data)  # converting into byte stream
+            # create packet, the "+x" contains the audio
+            message = struct.pack("Q", len(x))+x
+            # add a buffer
+            conn.sendall(message)  # send the packet
             # frames.append(data)
         except KeyboardInterrupt:
             stream.stop_stream()
@@ -94,5 +86,4 @@ def send_audio():
 
 
 if __name__ == "__main__":
-
     send_audio()
