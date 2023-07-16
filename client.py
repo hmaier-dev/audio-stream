@@ -18,8 +18,8 @@ RATE = 44100
 
 
 def receive_audio():
-    # server_name = socket.gethostname()
-    server_name = "192.168.0.224"
+    # server_name = "192.168.0.224"
+    server_name = sys.argv[1]
     port = 61234  # port of the server
 
     client_socket = socket.socket(
@@ -46,7 +46,8 @@ def receive_audio():
 
         try:
             while len(data) < payload_size:  # receiving 1016 bytes
-                # this while loop could be missed (because it iterates jsut once),
+                # this while loop could be missed
+                # (because it iterates just once),
                 # but for checking if theres a packet, I leave it there
                 # receive the first part of the data to unpack the data
                 packet = client_socket.recv(CHUNK)
